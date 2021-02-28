@@ -17,6 +17,9 @@ fn delete_gradle_cache(group_id: String, artifact_id: String) {
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
     }
+    if !buf.exists(){
+        return;
+    }
     remove_dir_all(&buf).unwrap();
     println!("Deleted {}", buf.to_str().unwrap());
 }
@@ -28,6 +31,9 @@ fn delete_maven_cache(group_id: String, artifact_id: String) {
     }
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
+    }
+    if !buf.exists(){
+        return;
     }
     remove_dir_all(&buf).unwrap();
     println!("Deleted {}", buf.to_str().unwrap());
