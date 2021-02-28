@@ -14,14 +14,25 @@ fn main() {
         delete_maven_cache(String::from(matches.value_of("group").unwrap()), String::from(matches.value_of("artifact").or(Option::from("")).unwrap()));
     } else if matches.is_present("all") {
         let gradle = get_gradle_folder();
-        remove_dir_all(&gradle).unwrap();
-        println!("Deleted {}", gradle.to_str().unwrap());
-
-        let maven = get_gradle_folder();
-        remove_dir_all(&maven).unwrap();
-        println!("Deleted {}", maven.to_str().unwrap());
+        if gradle.exists() {
+            let result = remove_dir_all(&gradle);
+            if result.is_ok() {
+                println!("Deleted Gradle {}", gradle.to_str().unwrap());
+            } else {
+                println!("Failed to Delete Gradle {}", gradle.to_str().unwrap());
+            }
+        }
+        let maven = get_maven_folder();
+        if maven.exists() {
+            let x = remove_dir_all(&maven);
+            if x.is_ok() {
+                println!("Deleted Maven {}", maven.to_str().unwrap());
+            } else {
+                println!("Failed to Delete Maven {}", maven.to_str().unwrap());
+            }
+        }
     } else {
-        app.print_long_help();
+        app.print_long_help().unwrap();
     }
 }
 
@@ -33,8 +44,12 @@ fn delete_gradle_cache(group_id: String, artifact_id: String) {
     if !buf.exists() {
         return;
     }
-    remove_dir_all(&buf).unwrap();
-    println!("Deleted {}", buf.to_str().unwrap());
+    let result = remove_dir_all(&buf);
+    if result.is_ok() {
+        println!("Deleted Gradle {}", buf.to_str().unwrap());
+    } else {
+        println!("Failed to Delete Gradle {}", buf.to_str().unwrap());
+    }
 }
 
 fn delete_maven_cache(group_id: String, artifact_id: String) {
@@ -48,8 +63,12 @@ fn delete_maven_cache(group_id: String, artifact_id: String) {
     if !buf.exists() {
         return;
     }
-    remove_dir_all(&buf).unwrap();
-    println!("Deleted {}", buf.to_str().unwrap());
+    let result = remove_dir_all(&buf);
+    if result.is_ok() {
+        println!("Deleted Maven {}", buf.to_str().unwrap());
+    } else {
+        println!("Failed to Delete Maven {}", buf.to_str().unwrap());
+    }
 }
 
 pub fn get_maven_folder() -> PathBuf {
