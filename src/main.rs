@@ -3,13 +3,26 @@ use std::path::{PathBuf};
 use std::fs::remove_dir_all;
 
 fn main() {
-    let matches = App::new("Maven Cache Cleanup").
+    let mut app = App::new("Maven Cache Cleanup").
         version("1.0-SNAPSHOT").author("Wyatt Jacob Herkamp <wherkamp@kingtux.me>").about("Removes a depend from the Gradle or Maven Cache").
-        arg(Arg::with_name("group").short("g").long("group").value_name("groupID").help("Group ID for the Depend").takes_value(true).required(true)).
-        arg(Arg::with_name("artifact").short("a").long("artifact").value_name("artifactID").help("Artifact ID if you want to be more specific").takes_value(true).required(false)).
-        get_matches();
-    delete_gradle_cache(String::from(matches.value_of("group").unwrap()), String::from(matches.value_of("artifact").or(Option::from("")).unwrap()));
-    delete_maven_cache(String::from(matches.value_of("group").unwrap()),String::from( matches.value_of("artifact").or(Option::from("")).unwrap()));
+        arg(Arg::with_name("all").long("all").help("Delete all").takes_value(false)).
+        arg(Arg::with_name("group").short("g").long("group").value_name("groupID").help("Group ID for the Depend").takes_value(true).required(false)).
+        arg(Arg::with_name("artifact").short("a").long("artifact").value_name("artifactID").help("Artifact ID if you want to be more specific").takes_value(true).required(false));
+    let matches = app.clone().get_matches();
+    if matches.is_present("group") {
+        delete_gradle_cache(String::from(matches.value_of("group").unwrap()), String::from(matches.value_of("artifact").or(Option::from("")).unwrap()));
+        delete_maven_cache(String::from(matches.value_of("group").unwrap()), String::from(matches.value_of("artifact").or(Option::from("")).unwrap()));
+    } else if matches.is_present("all") {
+        let gradle = get_gradle_folder();
+        remove_dir_all(&gradle).unwrap();
+        println!("Deleted {}", gradle.to_str().unwrap());
+
+        let maven = get_gradle_folder();
+        remove_dir_all(&maven).unwrap();
+        println!("Deleted {}", maven.to_str().unwrap());
+    } else {
+        app.print_long_help();
+    }
 }
 
 fn delete_gradle_cache(group_id: String, artifact_id: String) {
@@ -17,7 +30,7 @@ fn delete_gradle_cache(group_id: String, artifact_id: String) {
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
     }
-    if !buf.exists(){
+    if !buf.exists() {
         return;
     }
     remove_dir_all(&buf).unwrap();
@@ -32,7 +45,7 @@ fn delete_maven_cache(group_id: String, artifact_id: String) {
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
     }
-    if !buf.exists(){
+    if !buf.exists() {
         return;
     }
     remove_dir_all(&buf).unwrap();
