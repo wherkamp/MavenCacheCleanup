@@ -3,7 +3,11 @@ name = "mavencachecleanup"
 version = "0.1.0"
 authors = ["Wyatt Jacob Herkamp <wherkamp@kingtux.me>"]
 edition = "2018"
-
+repository = "https://github.com/wherkamp/MavenCacheCleanup"
+license = "MIT"
+license-file = "LICENSE"
+keywords=["Maven","Gradle", "Java"]
+categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
