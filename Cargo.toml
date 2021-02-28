@@ -5,7 +5,6 @@ authors = ["Wyatt Jacob Herkamp <wherkamp@kingtux.me>"]
 edition = "2018"
 repository = "https://github.com/wherkamp/MavenCacheCleanup"
 license = "MIT"
-license-file = "LICENSE"
 keywords=["Maven","Gradle", "Java"]
 categories = ["command-line-utilities"]
 description="Cleans up the Maven and Gradle cache on your machine."
