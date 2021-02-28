@@ -1,5 +1,5 @@
 use clap::{App, Arg};
-use std::path::{Path, PathBuf};
+use std::path::{PathBuf};
 use std::fs::remove_dir_all;
 
 fn main() {
@@ -17,7 +17,7 @@ fn delete_gradle_cache(group_id: String, artifact_id: String) {
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
     }
-    remove_dir_all(&buf);
+    remove_dir_all(&buf).unwrap();
     println!("Deleted {}", buf.to_str().unwrap());
 }
 
@@ -29,7 +29,7 @@ fn delete_maven_cache(group_id: String, artifact_id: String) {
     if !artifact_id.is_empty() {
         buf = buf.join(&artifact_id);
     }
-    remove_dir_all(&buf);
+    remove_dir_all(&buf).unwrap();
     println!("Deleted {}", buf.to_str().unwrap());
 }
 
