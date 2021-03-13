@@ -72,20 +72,9 @@ fn delete_maven_cache(group_id: String, artifact_id: String) {
 }
 
 pub fn get_maven_folder() -> PathBuf {
-    if cfg!(windows) {
-        // Use %appdata% if in windows.
-        return dirs::home_dir().unwrap().join(".m2").join("repository");
-    } else {
-        // Else attempt to find the home environment variable.
-        return dirs::home_dir().unwrap().join(".m2").join("repository");
-    }
+    return dirs::home_dir().unwrap().join(".m2").join("repository");
 }
 
 pub fn get_gradle_folder() -> PathBuf {
-    if cfg!(windows) {
-        // Use %appdata% if in windows.
-        return dirs::home_dir().unwrap().join(".gradle").join("caches").join("modules-2").join("files-2.1");
-    } else {
-        return dirs::home_dir().unwrap().join(".gradle").join("caches").join("modules-2").join("files-2.1");
-    }
+    return dirs::home_dir().unwrap().join(".gradle").join("caches").join("modules-2").join("files-2.1");
 }

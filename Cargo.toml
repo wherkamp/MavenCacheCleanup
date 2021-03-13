@@ -1,6 +1,6 @@
 [package]
 name = "mavencachecleanup"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Wyatt Jacob Herkamp <wherkamp@kingtux.me>"]
 edition = "2018"
 repository = "https://github.com/wherkamp/MavenCacheCleanup"
